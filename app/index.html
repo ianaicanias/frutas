@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#102018" />
+    <meta name="description" content="Cámara trasera para elegir fruta en el súper. Todo queda en el teléfono." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Fruta" />
+    <title>Fruta</title>
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="%BASE_URL%icons/icono-180.png" />
+    <link rel="icon" href="%BASE_URL%icons/icono-192.png" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #102018;
+        color: #f3e6c4;
+      }
+    </style>
+  </head>
+  <body>
+    <video id="visor" playsinline autoplay muted></video>
+    <div id="velo" class="velo"></div>
+    <section class="etiqueta" aria-label="Estado de la cámara">
+      <h1 class="marca">Fruta</h1>
+      <p class="en-vivo">
+        <span class="pip" id="pip" aria-hidden="true"></span>
+        <span id="estado">Abriendo la cámara trasera…</span>
+      </p>
+      <p class="linea" id="pantalla"></p>
+      <label class="nitidez">
+        Nitidez
+        <select id="resolucion"></select>
+      </label>
+    </section>
+    <section id="aviso" class="aviso" hidden role="alert">
+      <h2 id="aviso-titulo"></h2>
+      <p id="aviso-detalle"></p>
+      <ol id="aviso-pasos"></ol>
+    </section>
+    <button id="reanudar" class="reanudar" type="button" hidden>Reanudar cámara</button>
+    <noscript>
+      <p class="aviso noscript">Para usar la cámara, activá JavaScript en Safari.</p>
+    </noscript>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

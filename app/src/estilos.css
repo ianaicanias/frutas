@@ -43,24 +43,35 @@ select {
   outline-offset: 3px;
 }
 
-#visor {
+#visor,
+#cajas {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   background: var(--hoja);
+}
+
+#visor {
+  object-fit: cover;
+}
+
+#cajas {
+  z-index: 1;
+  pointer-events: none;
+  background: transparent;
 }
 
 .velo {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   background: rgb(16 32 24 / 92%);
 }
 
 .etiqueta,
 .aviso,
+.depuracion,
 .reanudar {
   background: var(--etiqueta);
   color: var(--tinta);
@@ -68,12 +79,14 @@ select {
 }
 
 .etiqueta,
-.aviso {
+.aviso,
+.depuracion {
   position: relative;
 }
 
 .etiqueta::before,
-.aviso::before {
+.aviso::before,
+.depuracion::before {
   content: '';
   position: absolute;
   top: 0;
@@ -82,7 +95,8 @@ select {
   width: 0.55rem;
 }
 
-.etiqueta::before {
+.etiqueta::before,
+.depuracion::before {
   background: var(--tallo);
 }
 
@@ -92,7 +106,7 @@ select {
 
 .etiqueta {
   position: fixed;
-  z-index: 2;
+  z-index: 4;
   top: calc(env(safe-area-inset-top) + 0.75rem);
   left: calc(env(safe-area-inset-left) + 0.75rem);
   width: min(17rem, calc(100vw - 1.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
@@ -160,7 +174,7 @@ select {
 
 .aviso {
   position: fixed;
-  z-index: 2;
+  z-index: 5;
   top: 46%;
   left: max(0.75rem, env(safe-area-inset-left));
   right: max(0.75rem, env(safe-area-inset-right));
@@ -201,7 +215,7 @@ select {
 
 .reanudar {
   position: fixed;
-  z-index: 3;
+  z-index: 5;
   right: max(0.75rem, env(safe-area-inset-right));
   bottom: calc(env(safe-area-inset-bottom) + 0.85rem);
   left: max(0.75rem, env(safe-area-inset-left));
@@ -210,6 +224,98 @@ select {
   border-radius: 2px;
   font-size: 1.05rem;
   font-weight: 700;
+}
+
+.depuracion {
+  position: fixed;
+  z-index: 3;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: calc(env(safe-area-inset-bottom) + 0.85rem);
+  left: max(0.75rem, env(safe-area-inset-left));
+  max-height: min(52dvh, 28rem);
+  margin: 0;
+  padding: 0.8rem 0.9rem 0.9rem 1.2rem;
+  overflow: auto;
+}
+
+body:has(#reanudar:not([hidden])) .depuracion {
+  bottom: calc(env(safe-area-inset-bottom) + 5.2rem);
+}
+
+.texto-boton {
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: 0.55rem;
+  border: 1.5px solid var(--tinta);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+.texto-boton:disabled {
+  opacity: 0.45;
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem 0.75rem;
+  margin: 0.55rem 0 0.7rem;
+  font-size: 0.85rem;
+}
+
+.hud dt,
+.hud dd {
+  margin: 0;
+}
+
+.hud dd {
+  font-weight: 700;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.campo select,
+.campo input[type='range'] {
+  min-height: 2.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.campo select {
+  padding: 0 0.45rem;
+  border: 1.5px solid var(--tinta);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--tinta);
+  color-scheme: light;
+}
+
+.nota-motor,
+.instruccion,
+#estado-medicion,
+#carga-detector {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.resumen {
+  margin: 0.6rem 0 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
 }
 
 .noscript {
@@ -236,6 +342,7 @@ select {
 @media (forced-colors: active) {
   .etiqueta,
   .aviso,
+  .depuracion,
   .reanudar {
     border: 1px solid CanvasText;
     background: Canvas;

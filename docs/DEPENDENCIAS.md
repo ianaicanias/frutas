@@ -1,8 +1,8 @@
 # Dependencias
 
-Licencias permisivas. No hay YOLO ni código AGPL. No hay runtime de detección en WP1.
+Licencias permisivas. No hay YOLO ni código AGPL.
 
-Las versiones exactas quedan en `package-lock.json`. La app no llama a analítica ni a una CDN: las fuentes se empaquetan en el build y el service worker solo cachea el mismo origen.
+Las versiones exactas quedan en `package-lock.json`. La app no llama a analítica ni a una CDN: las fuentes, el WASM de MediaPipe y el modelo se empaquetan con el build y se sirven desde el mismo origen. El service worker solo cachea ese origen.
 
 | Paquete | Versión | Uso | Licencia |
 | --- | --- | --- | --- |
@@ -12,6 +12,7 @@ Las versiones exactas quedan en `package-lock.json`. La app no llama a analític
 | @types/node | 26.6.5 | Tipos de Node para las pruebas y el build | MIT |
 | @fontsource/atkinson-hyperlegible | 5.3.0 | Texto de la interfaz, autoalojado | OFL-1.1 |
 | @fontsource/bricolage-grotesque | 5.3.0 | Marca «Fruta», autoalojada | OFL-1.1 |
+| @mediapipe/tasks-vision | 1.1.1 | Object Detector en el navegador (WASM / WebGL) | Apache-2.0 |
 
 ## Fuentes
 
@@ -20,8 +21,8 @@ Las versiones exactas quedan en `package-lock.json`. La app no llama a analític
 
 ## Modelos
 
-Ninguno en WP1.
+- EfficientDet-Lite0 float16: ver `models/efficientdet_lite0.md`. Apache-2.0. Clase usada: `banana`.
 
 ## Service worker
 
-Lo genera el build (`vite.config.ts` + `app/src/service-worker.ts`). No usa Workbox ni `storage.googleapis.com`.
+Lo genera el build (`vite.config.ts` + `app/src/service-worker.ts`). No usa Workbox ni `storage.googleapis.com`. El `.wasm` y el `.tflite` no entran en el precache de instalación; se piden al origen cuando carga el detector.

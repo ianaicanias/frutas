@@ -24,6 +24,7 @@
   </head>
   <body>
     <video id="visor" playsinline autoplay muted></video>
+    <canvas id="cajas" aria-hidden="true"></canvas>
     <div id="velo" class="velo"></div>
     <section class="etiqueta" aria-label="Estado de la cámara">
       <h1 class="marca">Fruta</h1>
@@ -32,10 +33,50 @@
         <span id="estado">Abriendo la cámara trasera…</span>
       </p>
       <p class="linea" id="pantalla"></p>
+      <p class="linea" id="linea-detector" hidden>Cargando detector…</p>
+      <p class="linea" id="linea-medicion" hidden></p>
       <label class="nitidez">
         Nitidez
         <select id="resolucion"></select>
       </label>
+      <button id="toggle-depuracion" class="texto-boton" type="button" aria-expanded="false" aria-controls="depuracion">
+        Depuración
+      </button>
+    </section>
+    <section id="depuracion" class="depuracion" hidden aria-label="Depuración del detector">
+      <p id="carga-detector">Cargando detector…</p>
+      <p class="instruccion">Dejá el teléfono con esta pantalla abierta, apuntando a las bananas.</p>
+      <label class="campo">
+        Motor
+        <select id="delegado"></select>
+      </label>
+      <p class="nota-motor">GPU es WebGL. Este MediaPipe no trae WebGPU.</p>
+      <button id="medir" class="texto-boton" type="button">Medir 5 minutos</button>
+      <p id="estado-medicion"></p>
+      <dl class="hud">
+        <dt>Latencia</dt>
+        <dd id="hud-latencia">—</dd>
+        <dt>Cuadros por segundo</dt>
+        <dd id="hud-fps">—</dd>
+        <dt>Bananas</dt>
+        <dd id="hud-cantidad">0</dd>
+        <dt>N</dt>
+        <dd id="hud-n">—</dd>
+        <dt>Carga del modelo</dt>
+        <dd id="hud-carga">—</dd>
+      </dl>
+      <label class="campo">
+        Cada cuántos cuadros
+        <select id="cada-n"></select>
+      </label>
+      <label class="campo">
+        Confianza mínima
+        <input id="umbral" type="range" />
+        <span id="umbral-valor"></span>
+      </label>
+      <button id="copiar" class="texto-boton" type="button" hidden>Copiar resumen</button>
+      <button id="bajar" class="texto-boton" type="button" hidden>Bajar resumen</button>
+      <pre id="resumen" class="resumen" hidden></pre>
     </section>
     <section id="aviso" class="aviso" hidden role="alert">
       <h2 id="aviso-titulo"></h2>

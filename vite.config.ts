@@ -16,6 +16,11 @@ export default defineConfig({
     outDir: resolve(raiz, 'dist'),
     emptyOutDir: true,
   },
+  server: {
+    fs: {
+      allow: [raiz],
+    },
+  },
   plugins: [
     {
       name: 'fruta-service-worker',
@@ -24,7 +29,13 @@ export default defineConfig({
         const dist = resolve(raiz, 'dist')
         const relativos = listar(dist)
           .map((absoluto) => relative(dist, absoluto).replaceAll('\\', '/'))
-          .filter((relativo) => relativo !== 'sw.js' && !relativo.endsWith('.map'))
+          .filter(
+            (relativo) =>
+              relativo !== 'sw.js' &&
+              !relativo.endsWith('.map') &&
+              !relativo.endsWith('.wasm') &&
+              !relativo.endsWith('.tflite'),
+          )
         const archivos = relativos.map((relativo) => `${base}${relativo}`)
         const hash = createHash('sha256').update(archivos.join('|')).digest('hex').slice(0, 10)
         writeFileSync(
@@ -40,7 +51,7 @@ export default defineConfig({
   ],
   test: {
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', '../core/**/*.test.ts'],
   },
 })
 

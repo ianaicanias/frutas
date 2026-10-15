@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "predev": "node scripts/copiar-runtime.mjs",
+    "prebuild": "node scripts/copiar-runtime.mjs",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
@@ -12,7 +14,8 @@
   },
   "dependencies": {
     "@fontsource/atkinson-hyperlegible": "^5.3.0",
-    "@fontsource/bricolage-grotesque": "^5.3.0"
+    "@fontsource/bricolage-grotesque": "^5.3.0",
+    "@mediapipe/tasks-vision": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

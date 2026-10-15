@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -28,9 +29,10 @@ describe('criterios de WP1', () => {
     expect(html).toContain('apple-mobile-web-app-capable')
     expect(html).toContain('manifest.webmanifest')
     expect(html).toContain('icono-180.png')
+    expect(html).toContain('Medir 5 minutos')
   })
 
-  it('core no importa app y no hay vibración ni YOLO', () => {
+  it('core no importa app ni MediaPipe, y no hay vibración ni YOLO', () => {
     const fuentes = archivosEn(join(raiz, 'app/src'))
       .filter((archivo) => !archivo.endsWith('.test.ts'))
       .map((archivo) => readFileSync(archivo, 'utf8'))
@@ -38,8 +40,17 @@ describe('criterios de WP1', () => {
     expect(fuentes).not.toMatch(/\.vibrate\s*\(/)
     expect(fuentes).not.toMatch(/ultralytics/i)
     for (const archivo of archivosEn(join(raiz, 'core'))) {
-      expect(readFileSync(archivo, 'utf8')).not.toMatch(/from\s+['"][^'"]*\bapp\b/)
+      const texto = readFileSync(archivo, 'utf8')
+      expect(texto).not.toMatch(/from\s+['"][^'"]*\bapp\b/)
+      expect(texto).not.toMatch(/@mediapipe/)
     }
+  })
+
+  it('el modelo de banana es el EfficientDet-Lite0 publicado', () => {
+    const bytes = readFileSync(join(raiz, 'models/efficientdet_lite0.tflite'))
+    expect(createHash('sha256').update(bytes).digest('hex')).toBe(
+      '4b59100025bea1235a84c1038879a6cccc9f6c49f5e41144e91e74d99e780993',
+    )
   })
 
   it('el deploy es GitHub Pages con Actions', () => {

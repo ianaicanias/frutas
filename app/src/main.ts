@@ -15,6 +15,7 @@ import {
   resolucionPorId,
   type IdResolucion,
 } from './resolucion.ts'
+import { crearSesionDetector } from './en-vivo.ts'
 import { registrarServiceWorker } from './service-worker.ts'
 
 registrarServiceWorker()
@@ -54,6 +55,8 @@ visor.muted = true
 visor.autoplay = true
 visor.playsInline = true
 visor.disablePictureInPicture = true
+
+const sesion = crearSesionDetector(visor)
 
 function leerAlmacen(): Storage | null {
   try {
@@ -169,12 +172,14 @@ function alVolver(): void {
   })
   if (plan === 'reintentar') void encender('auto')
   else if (plan === 'pedir-gesto') mostrarReanudar()
+  sesion.reanudar()
 }
 
 function alOcultar(): void {
   generacion += 1
   cerrarStream()
   reintentoAgotado = false
+  sesion.suspender()
 }
 
 document.addEventListener('visibilitychange', () => {
